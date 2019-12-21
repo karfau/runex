@@ -38,12 +38,12 @@ test('exits when module does not export function named run', async t => {
   const script = 'script.js';
   const scriptPath = require('path').join(t.testdir({[script]: 'module.exports = {};'}), script);
   [
-    ['via shebang', './index.js '],
-    ['via node', 'node ./index.js '],
-    ['via npx', 'npx . '],
+    ['via shebang', `./index.js ${scriptPath}`],
+    ['via node', `node ./index.js ${scriptPath}`],
+    ['via npx', `npx . ${scriptPath}`],
   ].forEach(([msg, cmd]) => {
     t.test(msg, async t => {
-      return command(cmd + scriptPath).then(it => {
+      return command(cmd).then(it => {
         t.match(it.code, ExitCode.InvalidModuleExport, 'exit code')
         t.match(it.stderr, 'export')
         t.match(it.stderr, script)
