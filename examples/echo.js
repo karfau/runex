@@ -1,5 +1,5 @@
 module.exports = {
   run: function (...args) {
-    console.log(...args);
+    console.log(JSON.stringify(args));
   }
 }
