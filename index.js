@@ -1,12 +1,11 @@
 #! /usr/bin/env node
 const {ExitCode} = require('./constants')
 
-const [/*node*/, /*self*/, ...args] = process.argv;
-if (args.length === 0) {
+const [/*node*/, /*self*/, moduleNameOrPath, ...args] = process.argv;
+if (moduleNameOrPath === undefined) {
   console.error('stderr')
   process.exit(ExitCode.MissingArgument)
 }
-const moduleNameOrPath = args[0];
 let _module;
 try {
   _module = require(moduleNameOrPath);
@@ -18,3 +17,4 @@ if (typeof _module.run !== 'function') {
   console.error(moduleNameOrPath, 'is not exporting a function named "run"');
   process.exit(ExitCode.InvalidModuleExport)
 }
+_module.run(...args);
