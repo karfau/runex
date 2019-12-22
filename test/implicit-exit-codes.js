@@ -1,3 +1,4 @@
+import {join, resolve} from 'path';
 import { test } from 'tap'
 
 import { ExitCode } from '../constants'
@@ -21,14 +22,14 @@ test('exits when no arguments are provided', async t => {
 
 test('exits when module can not be resolved', async t => {
   [
-    ['via shebang', './index.js ./not-existing'],
-    ['via node', 'node ./index.js ./not-existing'],
-    ['via npx', 'npx . ./not-existing'],
+    ['via shebang', './index.js not-existing'],
+    ['via node', 'node ./index.js not-existing'],
+    ['via npx', 'npx . not-existing'],
   ].forEach(([msg, cmd]) => {
     t.test(msg, async t => {
       return command(cmd).then(it => {
         t.match(it.code, ExitCode.ModuleNotFound, 'exit code')
-        t.match(it.stderr, '/not-existing', 'should communicate to stderr')
+        t.match(it.stderr, resolve('not-existing'), 'should list abs path to stderr');
       });
     });
   })

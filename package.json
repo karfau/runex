@@ -4,6 +4,7 @@
   "description": "Run module export as a script",
   "bin": "index.js",
   "scripts": {
+    "pretest": "cd examples/num-args; npm --silent run setup; cd -;",
     "test": "tap --no-coverage"
   },
   "repository": {

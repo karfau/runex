@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 const {ExitCode} = require('./constants')
+const {resolve} = require('path');
 
 const [/*node*/, /*self*/, moduleNameOrPath, ...args] = process.argv;
 if (moduleNameOrPath === undefined) {
@@ -8,7 +9,7 @@ if (moduleNameOrPath === undefined) {
 }
 let _module;
 try {
-  _module = require(moduleNameOrPath);
+  _module = require(resolve(moduleNameOrPath));
 } catch (e) {
   console.error(e.stack);
   process.exit(ExitCode.ModuleNotFound)

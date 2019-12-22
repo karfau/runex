@@ -1,0 +1,16 @@
+{
+  "name": "num-args",
+  "description": "An example of a package that is made runnable and uses runex as a devDependency.",
+  "private": true,
+  "version": "0.0.0",
+  "main": "num-args.js",
+  "devDependencies": {
+    "rimraf": "latest",
+    "runex": "../.."
+  },
+  "scripts": {
+    "clear": "rimraf node_modules",
+    "setup": "npm --silent run clear && npm --silent install --no-save --no-audit",
+    "test": "npx -q runex num-args.js a b"
+  }
+}
