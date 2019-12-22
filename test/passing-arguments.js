@@ -1,6 +1,6 @@
 import { test } from 'tap'
 
-import { command } from '../test.command'
+import { assertStdout, command } from '../test.command'
 
 /**
  * The following assertions rely on the implementation of `../examples/echo:run`
@@ -17,11 +17,7 @@ test('calls run method without any argument', async t => {
     ['via node', `node ./index.js examples/echo`],
     ['via npx', `npx . examples/echo`],
   ].forEach(([msg, cmd]) => {
-    t.test(msg, async t => {
-      return command(cmd).then(it => {
-        t.equal(it.stdout.trim(), '[]')
-      })
-    })
+    t.test(msg, async t => command(cmd).then(assertStdout(t, t.equals, '[]')))
   })
 })
 
@@ -32,11 +28,7 @@ test('calls run method and passes single argument', async t => {
     ['via node', `node ./index.js examples/echo '${argsJoined}'`],
     ['via npx', `npx . examples/echo '${argsJoined}'`],
   ].forEach(([msg, cmd]) => {
-    t.test(msg, async t => {
-      return command(cmd).then(it => {
-        t.match(it.stdout.trim(), `["${argsJoined}"]`)
-      })
-    })
+    t.test(msg, async t => command(cmd).then(assertStdout(t, t.equals, `["${argsJoined}"]`)))
   })
 })
 
@@ -48,11 +40,9 @@ test('calls run method and passes arguments', async t => {
     ['via node', `node ./index.js examples/echo ${argsJoined}`],
     ['via npx', `npx . examples/echo ${argsJoined}`],
   ].forEach(([msg, cmd]) => {
-    t.test(msg, async t => {
-      return command(cmd).then(it => {
-        t.match(it.stdout.trim(), '["0","1","2","3","4","5","6","7","8","9"]')
-      })
-    })
+    t.test(msg, async t => command(cmd).then(
+      assertStdout(t, t.equals, '["0","1","2","3","4","5","6","7","8","9"]')
+    ))
   })
 })
 
@@ -62,10 +52,6 @@ test('passes arguments to installed node module', async t => {
     ['via node', `node ./index.js num-args a b c`],
     ['via npx', `npx . num-args a b c`],
   ].forEach(([msg, cmd]) => {
-    t.test(msg, async t => {
-      return command(cmd).then(it => {
-        t.match(it.stdout.trim(), '3')
-      })
-    })
+    t.test(msg, async t => command(cmd).then(assertStdout(t, t.equals, '3')))
   })
 })

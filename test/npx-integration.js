@@ -2,7 +2,7 @@ import { existsSync } from 'fs'
 import { join } from 'path'
 import { test } from 'tap'
 
-import { command } from '../test.command'
+import { assertStdout, command } from '../test.command'
 
 const cwd = './examples/num-args'
 
@@ -32,9 +32,5 @@ test(`${cwd} setup`, async t => {
 
 test('"npx runex" works as expected', async t => {
   t.ok(existsSync(join(cwd, 'node_modules')), `${cwd}/node_modules existing`);
-  return command('npx runex ./num-args.js a b', {cwd}).then(it => {
-    t.equals(it.stderr.trim(), '', 'stderr should be empty');
-    t.assertNot(it.code, 'npx exit code');
-    t.match(it.stdout.trim(), '2', 'expected stdout');
-  });
+  return command('npx runex ./num-args.js a b', {cwd}).then(assertStdout(t, t.match, '2'));
 })
