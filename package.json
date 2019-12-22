@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/karfau/runex#readme",
   "devDependencies": {
+    "num-args": "./examples/num-args",
     "tap": "14.10.5"
   }
 }

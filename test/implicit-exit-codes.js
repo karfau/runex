@@ -1,4 +1,4 @@
-import {join, resolve} from 'path';
+import {resolve} from 'path';
 import { test } from 'tap'
 
 import { ExitCode } from '../constants'
@@ -30,6 +30,7 @@ test('exits when module can not be resolved', async t => {
       return command(cmd).then(it => {
         t.match(it.code, ExitCode.ModuleNotFound, 'exit code')
         t.match(it.stderr, resolve('not-existing'), 'should list abs path to stderr');
+        t.match(it.stderr, "'not-existing'", 'should list package name to stderr')
       });
     });
   })

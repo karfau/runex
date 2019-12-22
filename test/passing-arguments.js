@@ -55,3 +55,17 @@ test('calls run method and passes arguments', async t => {
     })
   })
 })
+
+test('passes arguments to installed node module', async t => {
+  [
+    ['via shebang', `./index.js num-args a b c`],
+    ['via node', `node ./index.js num-args a b c`],
+    ['via npx', `npx . num-args a b c`],
+  ].forEach(([msg, cmd]) => {
+    t.test(msg, async t => {
+      return command(cmd).then(it => {
+        t.match(it.stdout.trim(), '3')
+      })
+    })
+  })
+})

@@ -8,12 +8,20 @@ if (moduleNameOrPath === undefined) {
   process.exit(ExitCode.MissingArgument)
 }
 let _module;
+const modulePathAbs = resolve(moduleNameOrPath);
 try {
-  _module = require(resolve(moduleNameOrPath));
-} catch (e) {
-  console.error(e.stack);
-  process.exit(ExitCode.ModuleNotFound)
+  _module = require(modulePathAbs);
+} catch (errAbs) {
+  try {
+    // try node resolution
+    _module = require(moduleNameOrPath);
+  } catch (errNode) {
+    console.error(errAbs.message);
+    console.error(errNode.message);
+    process.exit(ExitCode.ModuleNotFound)
+  }
 }
+
 if (typeof _module.run !== 'function') {
   console.error(moduleNameOrPath, 'is not exporting a function named "run"');
   process.exit(ExitCode.InvalidModuleExport)
