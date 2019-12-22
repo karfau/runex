@@ -2,7 +2,7 @@ import { test } from 'tap'
 
 import { ExitCode } from '../constants'
 
-import { command } from '../command'
+import { command } from '../test.command'
 
 test('exits when no arguments are provided', async t => {
   [

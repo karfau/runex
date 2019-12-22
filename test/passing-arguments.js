@@ -1,6 +1,6 @@
 import { test } from 'tap'
 
-import { command } from '../command'
+import { command } from '../test.command'
 
 /**
  * The following assertions rely on the implementation of `../examples/echo:run`
