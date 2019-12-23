@@ -12,6 +12,10 @@
   "prConcurrentLimit": 1,
   "packageRules": [
     {
+      "packageNames": ["node"],
+      "rangeStrategy": "replace"
+    },
+    {
       "depTypeList": ["devDependencies"],
       "updateTypes": ["patch"],
       "automergeType": "branch",
