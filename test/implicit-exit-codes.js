@@ -1,7 +1,7 @@
 import {resolve} from 'path';
 import { test } from 'tap'
 
-import { ExitCode } from '../constants'
+import { ExitCode } from '../index'
 
 import { command } from '../test.command'
 
@@ -29,8 +29,8 @@ test('exits when module can not be resolved', async t => {
     t.test(msg, async t => {
       return command(cmd).then(it => {
         t.match(it.code, ExitCode.ModuleNotFound, 'exit code')
-        t.match(it.stderr, resolve('not-existing'), 'should list abs path to stderr');
-        t.match(it.stderr, "'not-existing'", 'should list package name to stderr')
+        t.match(it.stderr, resolve('not-existing'), 'stderr should contain abs path');
+        t.match(it.stderr, "node_modules/not-existing'", 'stderr should contain node module folder')
       });
     });
   })
