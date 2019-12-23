@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "config:js-lib",
+    ":pinAllExceptPeerDependencies",
+    ":separateMultipleMajorReleases",
+    ":combinePatchMinorReleases",
+    ":rebaseStalePrs",
+    ":unpublishSafe",
+    ":automergePatch"
+  ],
+  "bumpVersion": "patch",
+  "prConcurrentLimit": 1,
+  "packageRules": [
+    {
+      "depTypeList": ["devDependencies"],
+      "updateTypes": ["patch"],
+      "automergeType": "branch",
+      "automerge": true
+    }
+  ]
+}
