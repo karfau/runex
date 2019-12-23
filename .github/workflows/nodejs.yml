@@ -1,0 +1,52 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build-unix:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install and test
+      run: |
+        npm ci
+        npm test --100
+      env:
+        CI: true
+#  build-windows:
+#
+#    runs-on: windows-latest
+#
+#    strategy:
+#      matrix:
+#        node-version: [10.x, 12.x]
+#
+#    steps:
+#    - uses: actions/checkout@v1
+#    - name: Use Node.js ${{ matrix.node-version }}
+#      uses: actions/setup-node@v1
+#      with:
+#        node-version: ${{ matrix.node-version }}
+#    - name: npm install, build, and test
+#      run: |
+#        npm ci
+#        TODO: the next line currently fails with
+#  > runex@0.0.1 pretest D:\a\runex\runex
+#  > cd examples/num-args; npm --silent run setup; cd -;
+#
+#  The system cannot find the path specified.
+#  npm ERR! Test failed.  See above for more details.
+
+#        npm test --100
+#      env:
+#        CI: true
