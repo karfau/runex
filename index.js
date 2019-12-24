@@ -2,9 +2,10 @@
 const {join, resolve} = require('path');
 
 const ExitCode = {
-  MissingArgument: 1,
-  ModuleNotFound: 2,
-  InvalidModuleExport: 3
+  MissingArgument: 2,
+  ModuleNotFound: 4,
+  InvalidModuleExport: 8,
+  ExportThrows: 16
 }
 
 /**
@@ -68,6 +69,8 @@ const requireRunnable = (possiblePaths) => {
 /**
  * Parses a list of commend line arguments.
  *
+ * If you are invoking it make sure to slice/remove anything that's not relevant for `runex`.
+ *
  * @param {string[]} argv the relevant part of `process.argv`
  * @returns {{args: string[], moduleNameOrPath: string}}
  *
@@ -75,7 +78,7 @@ const requireRunnable = (possiblePaths) => {
  */
 const parseArguments = ([moduleNameOrPath, ...args]) => {
   if (moduleNameOrPath === undefined) {
-    console.error('You need to specify the module to run');
+    console.error('Missing argument: You need to specify the module to run');
     process.exit(ExitCode.MissingArgument);
   }
   return {moduleNameOrPath, args};
@@ -94,12 +97,20 @@ const parseArguments = ([moduleNameOrPath, ...args]) => {
  * @see parseArguments
  */
 const run = (runnable, {args} = parseArguments(process.argv.slice(2))) => {
-  runnable.run(...args);
+  return new Promise(resolve => {
+    resolve(runnable.run(...args))
+  }).catch(err => {
+    console.error(err);
+    process.exit(ExitCode.ExportThrows);
+  });
 }
 
 if (require.main === module) {
   const {moduleNameOrPath, args} = parseArguments(process.argv.slice(2));
-  run(requireRunnable(resolveRelativeAndRequirePaths(moduleNameOrPath)), {args});
+  run(requireRunnable(resolveRelativeAndRequirePaths(moduleNameOrPath)), {args})
+    .then(value => {
+      if (value) console.log(value);
+    });
 } else {
   module.exports = {
     ExitCode,
