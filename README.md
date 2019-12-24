@@ -4,16 +4,41 @@ Run module export as a `node` or `npx` script.
 
 (See [Why not ...](#why-not-) for alternative approaches.)
 
+## When to use
+
+So you have some code that you want to be able to run from the command line.
+You can of course just write it down into a file and run it with `node ./script.js`.
+Maybe you go one more step and add a [hashbang](https://en.wikipedia.org/wiki/Hashbang) and make it executable,
+so on a linux shell you run it with just `./script.js`.
+But this way you can not import the file without executing all the code.
+Wrapping all the code into a function and executing it `if (require.main === module)` helps with that.
+You also manage to parse those arguments you need, maybe using one of the available libraries.
+
+- Are you able to also call your function from code with those arguments? 
+- Do you need to make any async call (like making a request to an API)?
+- What about error handling: `try {...} catch (err) {...}` or `.then(...).catch(...)`?
+- Do you have/need one script or many scripts?
+
+Don't regret, `runex` was created, because this was just to much time and code 
+for something that convenient.
+
 ## Goals
 
-- reduce the amount of code that needs to be written to run a module (a javascript file) as a node script
-- the module does not (need to) have any special code to make it executable
-- convention over configuration
-- support for `async` functions/promises
+1. reduce the amount of code that needs to be written to run a module (a javascript file) as a node script
+2. the module does not (need to) have any special code to make it executable,
+including support for `async` functions/promises
+3. convention over configuration
 
-## Usage
+## How to take advantage
 
-TBD
+You export a method with the name `run`. Your module is now "runnable": `npx runex script.js`.
+- it receives (just the relevant) arguments (as strings)
+- it can be `async` / return a `Promise`
+- it can throw (rejected Promises will be treated the same way)
+- it is in control of `stdout` (`runex` only communicates over `stderr`), with one exception:
+  - if you return a value it will be printed to `stdout` (so you don't have to, see goal)
+
+Go check some [examples](https://github.com/karfau/runex/tree/master/examples).
 
 ### But I want my module to be executable
 
