@@ -1,4 +1,4 @@
-import {resolve} from 'path';
+import { resolve } from 'path'
 import { test } from 'tap'
 
 import { ExitCode } from '../index'
@@ -11,12 +11,10 @@ test('exits when no arguments are provided', async t => {
     ['via node', 'node ./index.js'],
     ['via npx', 'npx .'],
   ].forEach(([msg, cmd]) => {
-    t.test(msg, async t => {
-      return command(cmd).then(it => {
-        t.contains(it.stderr, 'argument', 'should communicate to stderr')
-        t.equals(it.code, ExitCode.MissingArgument, 'exit code')
-      });
-    });
+    t.test(msg, async t => command(cmd).then(it => {
+      t.contains(it.stderr, 'argument', 'should communicate to stderr')
+      t.equals(it.code, ExitCode.MissingArgument, 'exit code')
+    }))
   })
 })
 
@@ -31,52 +29,48 @@ test('exits when module can not be required', async t => {
     ['via node', 'node ./index.js not-existing'],
     ['via npx', 'npx . not-existing'],
   ].forEach(([msg, cmd]) => {
-    t.test(msg, async t => {
-      return command(cmd).then(it => {
-        t.contains(it.stderr, resolve('not-existing'), 'stderr should contain abs path');
-        t.contains(it.stderr, "node_modules/not-existing'", 'stderr should contain node module folder')
-        t.equals(it.code, ExitCode.ModuleNotFound, 'exit code')
-      });
-    });
+    t.test(msg, async t => command(cmd).then(it => {
+      t.contains(it.stderr, resolve('not-existing'), 'stderr should contain abs path')
+      t.contains(it.stderr, 'node_modules/not-existing\'', 'stderr should contain node module folder')
+      t.equals(it.code, ExitCode.ModuleNotFound, 'exit code')
+    }))
   })
 })
 
 test('exits when module does not export function named run', async t => {
-  const script = 'script.js';
+  const script = 'script.js'
   const scriptPath = require('path').join(t.testdir({[script]: 'module.exports = {};'}), script);
   [
     ['via shebang', `./index.js ${scriptPath}`],
     ['via node', `node ./index.js ${scriptPath}`],
     ['via npx', `npx . ${scriptPath}`],
   ].forEach(([msg, cmd]) => {
-    t.test(msg, async t => {
-      return command(cmd).then(it => {
-        t.match(it.stderr, 'export')
-        t.match(it.stderr, script)
-        t.equals(it.code, ExitCode.InvalidModuleExport, 'exit code')
-      });
-    });
+    t.test(msg, async t => command(cmd).then(it => {
+      t.match(it.stderr, 'export')
+      t.match(it.stderr, script)
+      t.equals(it.code, ExitCode.InvalidModuleExport, 'exit code')
+    }))
   })
 })
 
 test('exits when exported function throws directly', async t => {
-  const script = 'script.js';
-  const scriptPath = require('path').join(t.testdir({[script]: `module.exports = {
+  const script = 'script.js'
+  const scriptPath = require('path').join(t.testdir({
+    [script]: `module.exports = {
   run: () => {
     throw new Error("ouch");
   }
-};`}), script);
+};`
+  }), script);
   [
     ['via shebang', `./index.js ${scriptPath}`],
     ['via node', `node ./index.js ${scriptPath}`],
     ['via npx', `npx . ${scriptPath}`],
   ].forEach(([msg, cmd]) => {
-    t.test(msg, async t => {
-      return command(cmd).then(it => {
-        t.contains(it.stderr, 'ouch')
-        t.contains(it.stderr, script)
-        t.equals(it.code, ExitCode.ExportThrows, 'exit code')
-      });
-    });
+    t.test(msg, async t => command(cmd).then(it => {
+      t.contains(it.stderr, 'ouch')
+      t.contains(it.stderr, script)
+      t.equals(it.code, ExitCode.ExportThrows, 'exit code')
+    }))
   })
 })
