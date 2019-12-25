@@ -31,7 +31,16 @@ including support for `async` functions/promises
 
 ## How to take advantage
 
-You export a method with the name `run`. Your module is now "runnable": `npx runex script.js`.
+As soon as your module exports a method with the name `run`, it is "runnable":
+
+```
+Usage: [npx] runex [options] runnable [args]
+
+Options:
+  -r, --require <module>  0..n modules for node to require (default: [])
+  -h, --help              output usage information
+```
+
 - it receives (just the relevant) arguments (as strings)
 - it can be `async` / return a `Promise`
 - it can throw (rejected Promises will be treated the same way)

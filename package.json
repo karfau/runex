@@ -29,6 +29,11 @@
   "homepage": "https://github.com/karfau/runex#readme",
   "devDependencies": {
     "num-args": "./examples/num-args",
-    "tap": "14.10.5"
+    "tap": "14.10.5",
+    "testdouble": "3.12.4",
+    "ts-node": "8.5.4"
+  },
+  "dependencies": {
+    "commander": "4.0.1"
   }
 }
