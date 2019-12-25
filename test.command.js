@@ -4,7 +4,7 @@ const exec = require('util').promisify(require('child_process').exec)
  * The promise is always resolved to simplify writing tests.
  */
 export const command = async (cmd, opts) => exec(
-  cmd, {encoding: 'utf8', windowsHide: true, timeout: 1000, ...opts}
+  cmd, {encoding: 'utf8', windowsHide: true, ...opts}
 ).catch(it => it)
 
 /**
@@ -22,8 +22,9 @@ export const assertStdout = (
   t, test, stdoutAssertion, checkStdErr = true
 ) =>
   /** @param {{code?: number, stdout: string, stderr: string}} it */
-    ({code, stderr, stdout}) => {
-    code && t.assertNot(code, `unexpected exit code '${code}'`);
+    ({code, killed, signal, stderr, stdout}) => {
+    t.assertNot(killed || signal, `command was killed with '${signal}'`);
+    t.assertNot(code, `unexpected exit code '${code}'`);
     if (checkStdErr) {
       const stderrSafe = stderr ? stderr.trim() : stderr;
       stderrSafe && t.equals(
