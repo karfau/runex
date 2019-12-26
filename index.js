@@ -2,18 +2,20 @@
 const {Command} = require('commander')
 const {join, resolve} = require('path')
 
+/**
+ * The possible exit codes runex will use to distinguish different causes.
+ * Exit code 1 is not used because it can also come from many other sources.
+ */
 const ExitCode = {
+  /** A required argument is missing or parsing options failed. */
   MissingArgument: 2,
+  /** The module to run could not be resolved. */
   ModuleNotFound: 4,
+  /** The module to run could be resolved, but it doesn't export `run`. */
   InvalidModuleExport: 8,
+  /** Executing `runnable.run` threw an exception of the returned Promise was rejected. */
   ExportThrows: 16
 }
-
-/**
- * A Module that exports a method named `run`.
- *
- * @typedef {NodeModule & {run: Function}} RunnableModule
- */
 
 /**
  * List of path to check for `require`-able modules. Relative path comes first.
@@ -26,7 +28,7 @@ const ExitCode = {
  */
 const resolveRelativeAndRequirePaths = (moduleNameOrPath) => [
   resolve(moduleNameOrPath),
-  ...require.resolve.paths(moduleNameOrPath).map(dir => join(dir, moduleNameOrPath))
+  ...(require.resolve.paths(moduleNameOrPath) || []).map(dir => join(dir, moduleNameOrPath))
 ]
 
 /**
@@ -77,16 +79,6 @@ const requireRunnable = (
 }
 
 /**
- * Available CLI options for runex.
- *
- * Usage information: `npx runex -h|--help`
- *
- * @typedef {{
- *   require: string[]
- * }} Options
- */
-
-/**
  * Collects all distinct values, order is not persisted
  *
  * @param {string} value
@@ -96,10 +88,12 @@ const requireRunnable = (
 const collectDistinct = (value, prev) => [...new Set(prev).add(value).values()]
 
 /**
+ * Returns a function that, when called (without any arguments)
+ * will print the usage/help and call `process.exit(code)`.
  *
- * @param {Command} commander
- * @param {number} code
- * @returns {Function<never>}
+ * @param {Command} commander the commander instance to call `outputHelp` on.
+ * @param {number} code the exit code to use
+ * @return {function(): never}
  */
 const exitWithUsage = (commander, code) => () => {
   commander.outputHelp()
@@ -125,8 +119,9 @@ const parseArguments = (argv) => {
     )
     .exitOverride(exitOnMissingArgument)
     /** @see https://github.com/tj/commander.js/issues/512 */
-    .parse([null, '', ...argv])
-  const opts = commander.opts();
+    .parse(['', '', ...argv])
+
+  const opts = /** @type {Options} (type cast for tsc aka `as`) */ (commander.opts());
   const [moduleNameOrPath, ...args] = commander.args
 
   if (moduleNameOrPath === undefined) {
@@ -159,7 +154,7 @@ const run = (
   })
 }
 
-if (require.main === module) {
+if (module === /** @type {NodeModule | typeof module} */(require.main)) {
   const p = parseArguments(process.argv.slice(2))
   const runnable = requireRunnable(
     resolveRelativeAndRequirePaths(p.moduleNameOrPath),
@@ -180,3 +175,19 @@ if (require.main === module) {
     run
   }
 }
+
+/**
+ * A Module that exports a method named `run`.
+ *
+ * @typedef {NodeModule & {run: Function}} RunnableModule
+ */
+
+/**
+ * Available CLI options for runex.
+ *
+ * Usage information: `npx runex -h|--help`
+ *
+ * @typedef {{
+ *   require: string[]
+ * }} Options
+ */

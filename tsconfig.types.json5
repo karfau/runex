@@ -1,0 +1,14 @@
+{
+  "extends": ".",
+  "compilerOptions": {
+    "declaration": true,
+    "noEmit": false,
+    "removeComments": false
+  },
+  "include": [
+    "index.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

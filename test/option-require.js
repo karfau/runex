@@ -31,7 +31,7 @@ test('requireRunnable requires from opts.require', async t => {
   td.when(_require('runnable')).thenReturn({run: () => {}})
   const modules = ['a', 'b']
 
-  requireRunnable(['runnable'], {require: modules}, _require)
+  requireRunnable(['runnable'], {require: modules}, /** @type {NodeRequire} */(_require))
 
   t.matches(td.explain(_require).calls.map(it => it.args[0]), [...modules, 'runnable'])
 })

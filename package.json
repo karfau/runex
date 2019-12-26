@@ -3,9 +3,13 @@
   "version": "0.2.0",
   "description": "Run module export as a script",
   "bin": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "pretest": "cd examples/num-args; npm --silent run setup; cd -;",
-    "test": "tap --no-coverage"
+    "pretest": "npm run --silent tsc; cd examples/num-args; npm --silent run setup; cd -;",
+    "test": "tap --no-coverage",
+    "tsc": "npm run tsc:check && npm run tsc:types",
+    "tsc:check": "tsc --noEmit --listFiles",
+    "tsc:types": "tsc -p tsconfig.types.json5 --emitDeclarationOnly --listEmittedFiles"
   },
   "repository": {
     "type": "git",
@@ -28,10 +32,12 @@
   },
   "homepage": "https://github.com/karfau/runex#readme",
   "devDependencies": {
+    "@types/node": "13.1.0",
     "num-args": "./examples/num-args",
     "tap": "14.10.5",
     "testdouble": "3.12.4",
-    "ts-node": "8.5.4"
+    "ts-node": "8.5.4",
+    "typescript": "3.7.4"
   },
   "dependencies": {
     "commander": "4.0.1"
