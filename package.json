@@ -6,7 +6,7 @@
   "types": "index.d.ts",
   "scripts": {
     "pretest": "npm run --silent tsc; cd examples/num-args; npm --silent run setup; cd -;",
-    "test": "tap --no-coverage",
+    "test": "set; tap --no-coverage",
     "tsc": "npm run tsc:check && npm run tsc:types",
     "tsc:check": "tsc --noEmit --listFiles",
     "tsc:types": "tsc -p tsconfig.types.json5 --emitDeclarationOnly --listEmittedFiles"

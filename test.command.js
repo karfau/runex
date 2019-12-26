@@ -33,26 +33,15 @@ export const command = async (cmd, opts) => exec(
  * @param {import('tap').Test} t
  * @param {function(string, string|RegExp, string?): Promise<void>} test
  * @param {string | RegExp} stdoutAssertion
- * @param checkStdErr checking empty stderr can be skipped by setting to `false`
  */
 export const assertStdout = (
-  t, test, stdoutAssertion, checkStdErr = true
+  t, test, stdoutAssertion
 ) =>
   /** @param {CommandResponse} it */
-    ({code, killed, signal, stderr, stdout = 'null'}) => {
-    t.assertNot(killed || signal, `command was killed with '${signal}'`);
+    ({code, killed, signal, stderr, stdout}) => {
+    t.assertNot((killed || signal), `command was killed with '${signal}'`);
     t.assertNot(code, `unexpected exit code '${code}'`);
-    if (checkStdErr) {
-      const stderrSafe = stderr ? stderr.trim() : stderr;
-      stderrSafe && t.equals(
-        stderrSafe,
-        '',
-        `unexpected stderr: "${
-          stderrSafe.split('\n')[0]
-        }${
-          stderrSafe.includes('\n') ? '[...]' : ''
-        }"`
-      );
-    }
+    stderr = stderr.trim();
+    t.equals(stderr, '', `unexpected stderr: "${stderr.split('\n')[0]}[...]"`);
     test(stdout.trim(), stdoutAssertion, 'expected stdout');
   }
