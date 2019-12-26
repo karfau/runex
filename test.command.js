@@ -1,7 +1,24 @@
-const exec = require('util').promisify(require('child_process').exec)
+const childProcess = require('child_process')
+/**
+ * @type {
+ function(string, childProcess.ExecOptionsWithBufferEncoding):
+    childProcess.PromiseWithChild<{ stdout: string, stderr: string }>
+ }
+ */
+const exec = require('util').promisify(childProcess.exec)
+
+/**
+ * @typedef {childProcess.ExecException & { stdout: string, stderr: string }} CommandResponse
+ */
+
 /**
  * Execute a shell command async.
  * The promise is always resolved to simplify writing tests.
+ *
+ * @param {string} cmd the command to execute
+ * @param {childProcess.ExecOptions} [opts={encoding: 'utf8', windowsHide: true}]
+ *
+ * @return {Promise<CommandResponse>}
  */
 export const command = async (cmd, opts) => exec(
   cmd, {encoding: 'utf8', windowsHide: true, ...opts}
@@ -13,16 +30,16 @@ export const command = async (cmd, opts) => exec(
  * Also checks values of `it.code` and `it.stderr` to provide more helpful messages
  * in case of test failures.
  *
- * @param {ReturnType<typeof require('tap').test>} t
- * @param {Function} test
+ * @param {import('tap').Test} t
+ * @param {function(string, string|RegExp, string?): Promise<void>} test
  * @param {string | RegExp} stdoutAssertion
  * @param checkStdErr checking empty stderr can be skipped by setting to `false`
  */
 export const assertStdout = (
   t, test, stdoutAssertion, checkStdErr = true
 ) =>
-  /** @param {{code?: number, stdout: string, stderr: string}} it */
-    ({code, killed, signal, stderr, stdout}) => {
+  /** @param {CommandResponse} it */
+    ({code, killed, signal, stderr, stdout = 'null'}) => {
     t.assertNot(killed || signal, `command was killed with '${signal}'`);
     t.assertNot(code, `unexpected exit code '${code}'`);
     if (checkStdErr) {
