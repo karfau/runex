@@ -7,8 +7,7 @@
   "scripts": {
     "pretest": "npm run --silent tsc; cd examples/num-args; npm --silent run setup; cd -;",
     "test": "tap --reporter=tap --100 ",
-    "precodecov": "tap --coverage-report=text-lcov",
-    "codecov": "codecov --disable=gcov -t \"$CODECOV_TOKEN\"",
+    "codecov": "tap --coverage-report=text-lcov | codecov --pipe --disable=gcov -t \"$CODECOV_TOKEN\"",
     "tsc": "npm run tsc:check && npm run tsc:types",
     "tsc:check": "tsc --noEmit --listFiles",
     "tsc:types": "tsc -p tsconfig.types.json5 --emitDeclarationOnly --listEmittedFiles"
