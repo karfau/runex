@@ -23,6 +23,7 @@ jobs:
         npm test -- --100
       env:
         CI: true
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 #  build-windows:
 #
 #    runs-on: windows-latest
