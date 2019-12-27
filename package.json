@@ -5,9 +5,9 @@
   "bin": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "pretest": "npm run --silent tsc; cd examples/num-args; npm --silent run setup; cd -;",
-    "test": "tap --coverage-report=lcov --100",
-    "test:watch": "tap --no-coverage --watch",
+    "_pretest": "npm run --silent tsc; cd examples/num-args; npm --silent run setup; cd -;",
+    "test": "tap --reporter=tap --100 ",
+    "posttest": "if [ -z ${CODECOV_TOKEN} ] ; then tap --coverage-report=text-lcov ; npx codecov --token $CODECOV_TOKEN ; else exit 5 ; fi",
     "tsc": "npm run tsc:check && npm run tsc:types",
     "tsc:check": "tsc --noEmit --listFiles",
     "tsc:types": "tsc -p tsconfig.types.json5 --emitDeclarationOnly --listEmittedFiles"
