@@ -20,7 +20,7 @@ jobs:
     - name: npm install and test
       run: |
         npm ci
-        npm test -- --100
+        npm test
       env:
         CI: true
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}

@@ -1,8 +1,6 @@
 [![npm](https://img.shields.io/npm/v/runex)](https://www.npmjs.com/package/runex)
 [![dependencies status](https://david-dm.org/karfau/runex.svg)](https://david-dm.org/karfau/runex)
 
-[![codecov](https://codecov.io/gh/karfau/runex/branch/master/graph/badge.svg)](https://codecov.io/gh/karfau/runex)
-
 # runex
 
 Run module export as a `node` or `npx` script.
