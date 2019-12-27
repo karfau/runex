@@ -8,7 +8,7 @@
     "pretest": "npm run --silent tsc; cd examples/num-args; npm --silent run setup; cd -;",
     "test": "tap --reporter=tap --100 ",
     "precodecov": "tap --coverage-report=text-lcov",
-    "codecov": "npx codecov --disable=gcov -t \"$CODECOV_TOKEN\"",
+    "codecov": "codecov --disable=gcov -t \"$CODECOV_TOKEN\"",
     "tsc": "npm run tsc:check && npm run tsc:types",
     "tsc:check": "tsc --noEmit --listFiles",
     "tsc:types": "tsc -p tsconfig.types.json5 --emitDeclarationOnly --listEmittedFiles"
@@ -35,6 +35,7 @@
   "homepage": "https://github.com/karfau/runex#readme",
   "devDependencies": {
     "@types/node": "13.1.1",
+    "codecov": "3.6.1",
     "num-args": "./examples/num-args",
     "tap": "14.10.5",
     "testdouble": "3.12.4",

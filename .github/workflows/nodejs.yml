@@ -21,6 +21,11 @@ jobs:
       run: |
         npm ci
         npm test
+      env:
+        CI: true
+    - name: upload coverage
+      run: |
+        npm run codecov -- --dump
         npm run codecov
       env:
         CI: true
