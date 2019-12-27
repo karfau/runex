@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/karfau/runex/badge.svg)](https://coveralls.io/github/karfau/runex)
+
 # runex
 
 Run module export as a `node` or `npx` script.
