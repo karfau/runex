@@ -1,7 +1,7 @@
 [![npm](https://img.shields.io/npm/v/runex)](https://www.npmjs.com/package/runex)
 [![dependencies status](https://david-dm.org/karfau/runex.svg)](https://david-dm.org/karfau/runex)
 
-[![Coverage Status](https://coveralls.io/repos/github/karfau/runex/badge.svg)](https://coveralls.io/github/karfau/runex) (click to see details, it's 100%)
+[![codecov](https://codecov.io/gh/karfau/runex/branch/master/graph/badge.svg)](https://codecov.io/gh/karfau/runex)
 
 # runex
 
