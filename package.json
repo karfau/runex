@@ -10,7 +10,8 @@
     "codecov": "tap --coverage-report=text-lcov | codecov --pipe --disable=gcov -t \"$CODECOV_TOKEN\"",
     "tsc": "npm run tsc:check && npm run tsc:types",
     "tsc:check": "tsc --noEmit --listFiles",
-    "tsc:types": "tsc -p tsconfig.types.json5 --emitDeclarationOnly --listEmittedFiles"
+    "tsc:types": "tsc -p tsconfig.types.json5 --emitDeclarationOnly --listEmittedFiles",
+    "release": "np"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@types/node": "13.1.1",
     "codecov": "3.6.1",
+    "np": "5.2.1",
     "num-args": "./examples/num-args",
     "tap": "14.10.5",
     "testdouble": "3.12.4",
