@@ -24,6 +24,13 @@ test('parseArguments provides opts.require', async t => {
     parseArguments(`${multiple} runnable`.split(' ')).opts,
     {require: modules}
   ))
+
+  // https://github.com/tj/commander.js/issues/1127
+  t.test('when "-r" is arg for runnable', async t => t.matches(
+    parseArguments('-r ts-node/register runnable -r'.split(' ')),
+    {moduleNameOrPath: 'runnable', args: ['-r']}
+  ))
+
 })
 
 test('requireRunnable requires from opts.require', async t => {
