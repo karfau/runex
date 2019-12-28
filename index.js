@@ -77,15 +77,13 @@ const requireRunnable = (possiblePaths, opts, _require = require) => {
 }
 
 /**
- * Returns a function that, when called (without any arguments)
- * will print the usage/help and call `process.exit(code)`.
+ * Print the usage/help and call `process.exit(code)`.
  *
- * @param {Function} printUsage a function that dumps usage information to stderr.
  * @param {number} code the exit code to use
- * @return {function(): never}
+ * @return {never}
  */
-const exitWithUsage = (printUsage, code) => () => {
-  printUsage()
+const exitWithUsage = (code) => {
+  console.error(getUsage())
   process.exit(code)
 }
 
@@ -101,7 +99,8 @@ const exitWithUsage = (printUsage, code) => () => {
  */
 const parseArguments = (argv) => {
   const ya = yargs(argv, {
-    alias: {require: ['r']},
+    alias: {require: ['r'], help: ['h']},
+    boolean: ['help'],
     coerce: {require: arg => typeof arg === 'string' ? [arg] : arg},
     configuration: {
       'strip-aliased': true,
@@ -110,9 +109,8 @@ const parseArguments = (argv) => {
     },
     default: {require: []}
   })
-  // console.error(JSON.stringify(ya, null, 2))
-  const exitOnMissingArgument = exitWithUsage(
-    () => console.error('Usage: TBD'), ExitCode.MissingArgument
+  if (ya.help) (
+    exitWithUsage(0)
   )
 
   const [moduleNameOrPath, ...args] = ya._;
@@ -121,7 +119,7 @@ const parseArguments = (argv) => {
 
   if (moduleNameOrPath === undefined) {
     console.error('Missing argument: You need to specify the module to run.')
-    exitOnMissingArgument();
+    exitWithUsage(ExitCode.MissingArgument);
   }
   return {args, moduleNameOrPath, opts}
 }
@@ -168,6 +166,34 @@ if (module === /** @type {NodeModule | typeof module} */(require.main)) {
     resolveRelativeAndRequirePaths,
     run
   }
+}
+
+/**
+ *
+ */
+function getUsage() {
+  return `
+Usage: [npx] runex [options] <runnable> [args]
+
+Executes 'runnable.run(...args)' 
+
+Options:
+  -r, --require <module>  0..n modules for node to require (optional)
+  -h, --help              output this usage information and exit (code 0)
+
+<runnable>: Required argument, a relative path or node module name, that exports a method as 'run'
+If the module can not be resolved, runex exits (code ${ExitCode.ModuleNotFound}) 
+after listing the paths it attempted to require.
+
+If a module can be resolved, but doesn't export a method as 'run',
+runex exits (code ${ExitCode.InvalidModuleExport}).
+
+In case 'run' throws an Error or returns a Promise that gets rejected,
+runex exits (code ${ExitCode.ExportThrows}) after printing the error message and stack.
+
+For more details see
+https://github.com/karfau/runex
+`;
 }
 
 /**

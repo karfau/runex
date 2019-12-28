@@ -19,7 +19,7 @@ export namespace ExitCode {
     export const InvalidModuleExport: number;
     export const ExportThrows: number;
 }
-export function exitWithUsage(printUsage: Function, code: number): () => never;
+export function exitWithUsage(code: number): () => never;
 export function parseArguments(argv: string[]): {
     args: string[];
     moduleNameOrPath: string;
