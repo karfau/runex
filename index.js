@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-const {Command} = require('commander')
+const yargs = require('yargs-parser')
 const {join, resolve} = require('path')
 
 /**
@@ -51,9 +51,7 @@ const resolveRelativeAndRequirePaths = (moduleNameOrPath) => [
  *
  * @see resolveRelativeAndRequirePaths
  */
-const requireRunnable = (
-  possiblePaths, opts, _require = require
-) => {
+const requireRunnable = (possiblePaths, opts, _require = require) => {
   for (const hook of opts.require) {
     _require(hook)
   }
@@ -79,24 +77,15 @@ const requireRunnable = (
 }
 
 /**
- * Collects all distinct values, order is not persisted
- *
- * @param {string} value
- * @param {string[]} prev
- * @returns {string[]}
- */
-const collectDistinct = (value, prev) => [...new Set(prev).add(value).values()]
-
-/**
  * Returns a function that, when called (without any arguments)
  * will print the usage/help and call `process.exit(code)`.
  *
- * @param {Command} commander the commander instance to call `outputHelp` on.
+ * @param {Function} printUsage a function that dumps usage information to stderr.
  * @param {number} code the exit code to use
  * @return {function(): never}
  */
-const exitWithUsage = (commander, code) => () => {
-  commander.outputHelp()
+const exitWithUsage = (printUsage, code) => () => {
+  printUsage()
   process.exit(code)
 }
 
@@ -111,18 +100,24 @@ const exitWithUsage = (commander, code) => () => {
  * @throws {ExitCode.MissingArgument} (exits) in case missing argument for module
  */
 const parseArguments = (argv) => {
-  const commander = new Command('[npx] runex');
-  const exitOnMissingArgument = exitWithUsage(commander, ExitCode.MissingArgument)
-  commander.usage('[options] runnable [args]')
-    .option(
-      '-r, --require <module>', '0..n modules for node to require', collectDistinct, []
-    )
-    .exitOverride(exitOnMissingArgument)
-    /** @see https://github.com/tj/commander.js/issues/512 */
-    .parse(['', '', ...argv])
+  const ya = yargs(argv, {
+    alias: {require: ['r']},
+    coerce: {require: arg => typeof arg === 'string' ? [arg] : arg},
+    configuration: {
+      'strip-aliased': true,
+      'strip-dashed': true,
+      'halt-at-non-option': true
+    },
+    default: {require: []}
+  })
+  // console.error(JSON.stringify(ya, null, 2))
+  const exitOnMissingArgument = exitWithUsage(
+    () => console.error('Usage: TBD'), ExitCode.MissingArgument
+  )
 
-  const opts = /** @type {Options} (type cast for tsc aka `as`) */ (commander.opts());
-  const [moduleNameOrPath, ...args] = commander.args
+  const [moduleNameOrPath, ...args] = ya._;
+  delete ya._;
+  const opts = /** @type {Options} */(/** @type {unknown} */ (ya));
 
   if (moduleNameOrPath === undefined) {
     console.error('Missing argument: You need to specify the module to run.')
@@ -166,7 +161,6 @@ if (module === /** @type {NodeModule | typeof module} */(require.main)) {
     })
 } else {
   module.exports = {
-    collectDistinct,
     ExitCode,
     exitWithUsage,
     parseArguments,

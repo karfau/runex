@@ -13,14 +13,13 @@ export type RunnableModule = NodeModule & {
 export type Options = {
     require: string[];
 };
-export function collectDistinct(value: string, prev: string[]): string[];
 export namespace ExitCode {
     export const MissingArgument: number;
     export const ModuleNotFound: number;
     export const InvalidModuleExport: number;
     export const ExportThrows: number;
 }
-export function exitWithUsage(commander: any, code: number): () => never;
+export function exitWithUsage(printUsage: Function, code: number): () => never;
 export function parseArguments(argv: string[]): {
     args: string[];
     moduleNameOrPath: string;

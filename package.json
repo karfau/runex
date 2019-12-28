@@ -42,6 +42,7 @@
   "homepage": "https://github.com/karfau/runex#readme",
   "devDependencies": {
     "@types/node": "13.1.4",
+    "@types/yargs-parser": "13.1.0",
     "codecov": "3.6.1",
     "np": "5.2.1",
     "num-args": "./examples/num-args",
@@ -51,6 +52,6 @@
     "typescript": "3.7.4"
   },
   "dependencies": {
-    "commander": "4.0.1"
+    "yargs-parser": "16.1.0"
   }
 }

@@ -25,7 +25,7 @@ test('parseArguments provides opts.require', async t => {
     {require: modules}
   ))
 
-  // https://github.com/tj/commander.js/issues/1127
+  // https://github.com/karfau/runex/issues/7
   t.test('when "-r" is arg for runnable', async t => t.matches(
     parseArguments('-r ts-node/register runnable -r'.split(' ')),
     {moduleNameOrPath: 'runnable', args: ['-r']}
