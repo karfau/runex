@@ -1,8 +1,4 @@
-examples/
-
-test/*
-test.*.js
-
-.*
-
-runex.iml
+# we don't add any files by default:
+*
+# npm automatically adds `bin`, `files` and `main` from `package.json`, LICENSE, README.md
+# so to include files add them to `files` in `package.json`

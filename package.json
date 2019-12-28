@@ -4,6 +4,9 @@
   "description": "Run module export as a script",
   "bin": "index.js",
   "types": "index.d.ts",
+  "files": [
+    "index.d.ts"
+  ],
   "scripts": {
     "pretest": "npm run --silent tsc; cd examples/num-args; npm --silent run setup; cd -;",
     "test": "tap --reporter=tap --100 ",
