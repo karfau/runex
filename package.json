@@ -8,12 +8,15 @@
     "index.d.ts"
   ],
   "scripts": {
+    "clear": "npx rimraf coverage .nyc_output ",
+    "clear:all": "npm run clear -- node_modules examples/num-args/node_modules",
     "pretest": "npm run --silent tsc; cd examples/num-args; npm --silent run setup; cd -;",
     "test": "tap --reporter=tap --100 ",
     "codecov": "tap --coverage-report=text-lcov | codecov --pipe --disable=gcov -t \"$CODECOV_TOKEN\"",
     "tsc": "npm run tsc:check && npm run tsc:types",
     "tsc:check": "tsc --noEmit --listFiles",
     "tsc:types": "tsc -p tsconfig.types.json5 --emitDeclarationOnly --listEmittedFiles",
+    "prerelease": "npm --silent run clear:all; npm ci",
     "release": "np"
   },
   "repository": {
