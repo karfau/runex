@@ -1,6 +1,6 @@
 {
   "name": "runex",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Run module export as a script",
   "bin": "index.js",
   "types": "index.d.ts",
@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/karfau/runex#readme",
   "devDependencies": {
-    "@types/node": "13.1.2",
+    "@types/node": "13.1.4",
     "codecov": "3.6.1",
     "np": "5.2.1",
     "num-args": "./examples/num-args",
