@@ -39,9 +39,11 @@ export const assertStdout = (
 ) =>
   /** @param {CommandResponse} it */
     ({code, killed, signal, stderr, stdout}) => {
-    t.assertNot((killed || signal), `command was killed with '${signal}'`);
-    t.assertNot(code, `unexpected exit code '${code}'`);
+    t.assertNot((killed || signal), `expected no kill signal (was '${signal}')`);
+    t.assertNot(code, `expected no exit code (was '${code}')`);
     stderr = stderr.trim();
-    t.equals(stderr, '', `unexpected stderr: "${stderr.split('\n')[0]}[...]"`);
+    t.equals(
+      stderr, '', `expected empty stderr (1st line: "${stderr.split('\n')[0]}")`
+    );
     test(stdout.trim(), stdoutAssertion, 'expected stdout');
   }
