@@ -6,24 +6,24 @@ import { assertStdout, command } from '../test.command'
 test('parseArguments provides opts.require', async t => {
   [
     '--require hook', '--require=hook', '-r hook', '-r=hook'
-  ].forEach(option => {
+  ].forEach(option => t.test(`when passing "${option}"`, async t =>
     t.matches(
       parseArguments(`${option} runnable`.split(' ')).opts,
-      {require: ['hook']},
-      `when passing "${option}"`
+      {require: ['hook']}
     )
-  })
+  ))
 
-  t.matches(
-    parseArguments([`runnable`]).opts,
-    {require: []},
-    `when --require option is not passed`
+  t.test(
+    'when --require option is not passed',
+    async t => t.matches(parseArguments([`runnable`]).opts, {require: []})
   )
 
   const modules = ['one', 'two']
   const multiple = modules.map(m => `-r ${m}`).join(' ')
-  const actual = parseArguments(`${multiple} runnable`.split(' ')).opts
-  t.matches(actual, {require: modules}, `when passing "${multiple}"`)
+  t.test(`when passing "${multiple}"`, async t => t.matches(
+    parseArguments(`${multiple} runnable`.split(' ')).opts,
+    {require: modules}
+  ))
 })
 
 test('requireRunnable requires from opts.require', async t => {
