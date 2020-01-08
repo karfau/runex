@@ -70,7 +70,7 @@ const requireRunnable = (
       }
       return required
     } catch (err) {
-      errors.push(err.message)
+      errors.push(err.message === `Cannot find module '${candidate}'` ? err.message : err)
     }
   }
   console.error('No runnable module found:')

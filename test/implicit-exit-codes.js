@@ -21,7 +21,7 @@ test('exits when no arguments are provided', async t => {
 /**
  * possible causes:
  * - file not existing (extensions might added by node/ts-node)
- * - requiring the file throws (e.g. syntax error) => TODO: shortened error message not ideal
+ * - requiring the file throws (e.g. syntax error)
  */
 test('exits when module can not be required', async t => {
   [
