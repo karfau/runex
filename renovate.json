@@ -3,9 +3,9 @@
     "config:js-lib",
     ":pinAllExceptPeerDependencies",
     ":separateMultipleMajorReleases",
-    ":combinePatchMinorReleases",
     ":rebaseStalePrs",
     ":unpublishSafe",
+    ":automergeRequireAllStatusChecks",
     ":automergePatch",
     ":semanticCommits"
   ],
@@ -14,12 +14,6 @@
     {
       "packageNames": ["node"],
       "rangeStrategy": "replace"
-    },
-    {
-      "depTypeList": ["devDependencies"],
-      "updateTypes": ["patch"],
-      "automergeType": "branch",
-      "automerge": true
     }
   ]
 }
