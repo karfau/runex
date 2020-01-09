@@ -6,7 +6,8 @@
     ":combinePatchMinorReleases",
     ":rebaseStalePrs",
     ":unpublishSafe",
-    ":automergePatch"
+    ":automergePatch",
+    ":semanticCommits"
   ],
   "prConcurrentLimit": 1,
   "packageRules": [
