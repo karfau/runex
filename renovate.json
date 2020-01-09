@@ -8,7 +8,6 @@
     ":unpublishSafe",
     ":automergePatch"
   ],
-  "bumpVersion": "patch",
   "prConcurrentLimit": 1,
   "packageRules": [
     {
