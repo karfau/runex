@@ -47,7 +47,7 @@
     "num-args": "./examples/num-args",
     "tap": "14.10.5",
     "testdouble": "3.12.5",
-    "ts-node": "8.5.4",
+    "ts-node": "8.6.1",
     "typescript": "3.7.4"
   },
   "dependencies": {
