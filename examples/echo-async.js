@@ -10,20 +10,22 @@ const delay = async (ms = 100) => new Promise(resolve => {
 
 module.exports = {
   /**
-   * The **async** "Hello, world" of a `run` method, it uses `JSON.stringify`
-   * on all passed arguments, so it is more easy to see how many arguments have been passed.
-   * (This way it is more easy to parse the output with other shell tools like `jq`.)
+   * The **async** "Hello, world" of a `run` method,
+   * it returns all passed arguments as an Array after a short delay.
+   * (Runex prints the JSON to stdout by default.)
    *
-   * @returns {Promise<string>} The JSON is only provided after a short delay.
-   *          Rejects with with `Error.message` set to 'empty' if no arguments are passed.
+   * This way tests can check how many arguments have been passed.
+   *
+   * @returns {Promise<string[]>} The JSON is only provided after a short delay.
+   * @throws Rejects with with `Error.message` set to 'empty' if no arguments are passed.
    *
    * Usage:
-   * `npx runex examples/echo-async` // => []
+   * `npx runex examples/echo-async` // throws 'empty'
    * `npx runex examples/echo-async Hello world` // => ["Hello", "world"]
    * `npx runex examples/echo-async 'Hello, world'` // => ["Hello, world"]
    */
   run: async (...args) => delay().then(() => {
     if (args.length === 0) throw new Error('empty');
-    return JSON.stringify(args);
+    return args;
   })
 }

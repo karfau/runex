@@ -50,6 +50,7 @@ Options:
 - it can throw (rejected Promises will be treated the same way)
 - it is in control of `stdout` (`runex` only communicates over `stderr`), with one exception:
   - if you return a value it will be printed to `stdout` (so you don't have to, see goal)
+    if `typeof value === 'object` it will be `JSON.stringify`ed.
 
 Go check some [examples](https://github.com/karfau/runex/tree/master/examples).
 

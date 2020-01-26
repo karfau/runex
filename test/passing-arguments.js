@@ -3,9 +3,6 @@ import { test } from 'tap'
 import { assertStdout, command } from '../test.command'
 
 /**
- * The following assertions rely on the implementation of `../examples/echo:run`
- * to print the `JSON.stringify`ed arguments to stdout.
- *
  * Passing any argument via shell means they are all received as strings,
  * there is no conversion of arguments (other then type coercion done by JS runtime).
  *

@@ -162,7 +162,9 @@ if (module === /** @type {NodeModule | typeof module} */(require.main)) {
   )
   run(runnable, p)
     .then(value => {
-      if (value !== undefined) console.log(value)
+      if (value !== undefined) console.log(
+        typeof value === 'object' ? JSON.stringify(value) : value
+      )
     })
 } else {
   module.exports = {
