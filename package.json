@@ -1,6 +1,6 @@
 {
   "name": "runex",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "description": "Run module export as a script",
   "bin": "index.js",
   "types": "index.d.ts",
