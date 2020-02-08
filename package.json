@@ -43,7 +43,7 @@
   "devDependencies": {
     "@types/node": "13.7.0",
     "codecov": "3.6.4",
-    "np": "5.2.1",
+    "np": "6.0.0",
     "num-args": "./examples/num-args",
     "tap": "14.10.6",
     "testdouble": "3.12.5",
