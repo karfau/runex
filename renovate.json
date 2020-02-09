@@ -9,6 +9,7 @@
     ":automergePatch",
     ":semanticCommits"
   ],
+  "ignorePaths": [],
   "prCreation": "not-pending",
   "prConcurrentLimit": 1,
   "packageRules": [
