@@ -48,7 +48,7 @@
     "tap": "14.10.6",
     "testdouble": "3.12.5",
     "ts-node": "8.6.2",
-    "typescript": "3.8.2"
+    "typescript": "3.8.3"
   },
   "dependencies": {
     "commander": "4.1.1"
