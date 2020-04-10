@@ -8,9 +8,11 @@
     "index.d.ts"
   ],
   "scripts": {
-    "clear": "npx rimraf coverage .nyc_output ",
+    "clear": "npx rimraf coverage .nyc_output runex-*.tgz",
     "clear:all": "npm run clear -- node_modules examples/num-args/node_modules",
-    "pretest": "npm run --silent tsc && cd examples/num-args && npm --silent run setup && cd -",
+    "pretest": "npm run --silent clear && npm run --silent tsc && npm run --silent pretest:num-args && npm run --silent pretest:npx-require",
+    "pretest:num-args": "cd examples/num-args && npm --silent run setup && cd -",
+    "pretest:npx-require": "npm pack && mv runex-*.tgz runex.tgz && cd examples/npx-require && npm --silent run setup && cd -",
     "test": "tap --reporter=tap --100 ",
     "dev": "tap --coverage --watch",
     "codecov": "tap --coverage-report=text-lcov | codecov --pipe --disable=gcov -t \"$CODECOV_TOKEN\"",

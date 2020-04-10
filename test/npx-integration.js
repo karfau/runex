@@ -4,8 +4,6 @@ import { test } from 'tap'
 
 import { assertStdout, command } from '../test.command'
 
-const cwd = './examples/num-args'
-
 /**
  * Checking npx integration:
  * Since we want to test the current code (not what npx would install from npm),
@@ -17,20 +15,23 @@ const cwd = './examples/num-args'
  * Since I was not able to run `npm i` as part of the test,
  * it is currently configured in `pretest`.
  *
+ * @see examples/npx-require
  * @see examples/num-args
  */
-/*
-test(`${cwd} setup`, async t => {
-  return command('npm setup', {cwd}).then(it => {
-    t.equals(it.stderr.trim(), '', 'stderr should be empty');
-    t.assertNot(it.code, 'npm install exit code');
-    console.log('1st stdout', it.stdout);
-  });
-  t.ok(existsSync(join(cwd, 'node_modules')), 'node_modules existing');
-});
-*/
 
 test('"npx runex" works as expected', async t => {
-  t.ok(existsSync(join(cwd, 'node_modules')), `${cwd}/node_modules existing`);
-  return command('npx runex ./num-args.js a b', {cwd}).then(assertStdout(t, t.match, '2'));
+  t.ok(
+    existsSync(join('examples', 'num-args', 'node_modules')),
+    `./examples/num-args/node_modules existing`
+  );
+  return command(
+    'npx runex ./num-args.js a b', {cwd: 'examples/num-args'}
+  ).then(assertStdout(t, t.match, '2'));
+})
+
+test('"npx runex -r ts-node/register" works when ts-node is installed in local node-modules', async t => {
+  t.ok(existsSync('runex.tgz'), 'runex.tgz existing');
+  return command(
+    'npm run test', {cwd: 'examples/npx-require'}
+  ).then(assertStdout(t, t.match, '2'));
 })
