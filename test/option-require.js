@@ -27,13 +27,20 @@ test('parseArguments provides opts.require', async t => {
 })
 
 test('requireRunnable requires from opts.require', async t => {
+
   const _require = td.func('_require')
+  _require['resolve'] = td.func('_require.resolve')
   td.when(_require('runnable')).thenReturn({run: () => {}})
   const modules = ['a', 'b']
+  modules.forEach((hook) => {
+    td.when(_require['resolve'](hook, {paths: ['.']})).thenReturn(`resolved/${hook}`)
+  })
 
   requireRunnable(['runnable'], {require: modules}, /** @type {NodeRequire} */(_require))
 
-  t.matches(td.explain(_require).calls.map(it => it.args[0]), [...modules, 'runnable'])
+  t.matches(td.explain(_require).calls.map(it => it.args[0]), [
+    ...modules.map(hook => `resolved/${hook}`), 'runnable'
+  ])
 })
 
 test('invalid options', async t => {

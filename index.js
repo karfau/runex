@@ -55,7 +55,7 @@ const requireRunnable = (
   possiblePaths, opts, _require = require
 ) => {
   for (const hook of opts.require) {
-    _require(hook)
+    _require(_require.resolve(hook, {paths: ['.']}));
   }
 
   const errors = []
