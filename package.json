@@ -43,7 +43,7 @@
   },
   "homepage": "https://github.com/karfau/runex#readme",
   "devDependencies": {
-    "@types/node": "13.13.1",
+    "@types/node": "13.13.2",
     "codecov": "3.6.5",
     "np": "6.2.1",
     "num-args": "./examples/num-args",
