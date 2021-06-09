@@ -53,6 +53,6 @@
     "typescript": "3.8.3"
   },
   "dependencies": {
-    "commander": "5.0.0"
+    "commander": "5.1.0"
   }
 }
