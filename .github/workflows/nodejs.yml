@@ -24,6 +24,7 @@ jobs:
       env:
         CI: true
     - name: upload coverage
+      if: always()
       run: |
         npm run codecov -- --dump
         npm run codecov
