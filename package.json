@@ -50,7 +50,7 @@
     "tap": "14.10.7",
     "testdouble": "3.16.2",
     "ts-node": "8.10.2",
-    "typescript": "3.8.3"
+    "typescript": "3.9.10"
   },
   "dependencies": {
     "commander": "5.1.0"
