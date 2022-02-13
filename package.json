@@ -48,7 +48,7 @@
     "np": "7.5.0",
     "num-args": "./examples/num-args",
     "tap": "14.10.7",
-    "testdouble": "3.16.2",
+    "testdouble": "3.16.4",
     "ts-node": "10.4.0",
     "typescript": "3.9.10"
   },
